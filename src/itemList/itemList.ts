@@ -1,8 +1,9 @@
 import template from './template.html';
 import { ItemListItem } from '../itemListItem/itemListItem';
 import { ItemData } from '../itemListItem/ItemData';
-import { ItemCompleteFilter } from '../filters/itemComplete/itemCompleteFilter';
+import { ItemCompleteFilter } from '../filters/itemCompleteFilter';
 import { IFilter } from '../filters/IFilter';
+import { HighPriorityFilter } from '../filters/highPriorityFilter';
 
 const templateEl = document.createElement('template');
 templateEl.innerHTML = template;
@@ -25,21 +26,32 @@ class ItemList extends HTMLElement {
   async connectedCallback() {
     this.itemsData = require('../../toDoItems.json') as ItemData[];
 
-    this.setResults(this.itemsData);
+    // some filters may be on by default, so filter immediately
+    this.filterResults();
+  }
+
+  public disconnectedCallback() {
+    this.filters.forEach(filter => {
+      filter.removeEventListener('filter', this.handleFilter);
+    });
   }
 
   private registerFilters = (shadow: ShadowRoot) => {
     this.filters.push(new ItemCompleteFilter());
+    this.filters.push(new HighPriorityFilter());
     this.filters.forEach(filter => {
-      filter.addEventListener('filter', () => {
-        this.filterResults();
-      });
+      filter.addEventListener('filter', this.handleFilter);
       shadow.appendChild(filter);
     });
   };
 
+  private handleFilter = () => {
+    this.filterResults();
+  };
+
   private filterResults = () => {
     const filteredResults = this.itemsData.filter(item => {
+      // only do active filters?
       return this.filters.every(filter => filter.filter(item));
     });
     this.setResults(filteredResults);

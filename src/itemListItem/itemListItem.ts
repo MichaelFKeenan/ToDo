@@ -7,6 +7,7 @@ templateEl.innerHTML = template;
 export class ItemListItem extends HTMLElement {
   private nameEl: HTMLElement | null = null;
   private completeEl: HTMLElement | null = null;
+  private priorityEl: HTMLElement | null = null;
 
   constructor(itemData: ItemData) {
     super();
@@ -24,7 +25,13 @@ export class ItemListItem extends HTMLElement {
       return;
     }
 
+    this.priorityEl = shadow.getElementById('item__priority');
+    if (this.priorityEl === null) {
+      return;
+    }
+
     this.completeEl.textContent = itemData.Complete === true ? 'complete' : 'incomplete';
+    this.priorityEl.textContent = itemData.Priority.toString();
   }
 }
 window.customElements.define('item-list-item', ItemListItem);

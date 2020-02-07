@@ -1,10 +1,17 @@
 [
   {
     "Name": "item one name",
-    "Complete": true
+    "Complete": true,
+    "Priority": 1
   },
   {
     "Name": "item two name",
-    "Complete": false
+    "Complete": false,
+    "Priority": 3
+  },
+  {
+    "Name": "item two name",
+    "Complete": false,
+    "Priority": 2
   }
 ]
