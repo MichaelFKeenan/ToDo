@@ -43,7 +43,7 @@ class ItemList extends HTMLElement {
       filter.addEventListener('filter', this.handleFilter);
       shadow.appendChild(filter);
     });
-  };
+  }
 
   private handleFilter = () => {
     this.filterResults();

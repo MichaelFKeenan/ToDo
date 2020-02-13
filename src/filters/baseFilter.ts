@@ -10,6 +10,7 @@ export class BaseFilter extends HTMLElement {
 
   constructor(filterDisplay: string, active?: boolean) {
     super();
+    console.log('base constructor');
     const shadow = this.attachShadow({ mode: 'closed' });
     shadow.appendChild(templateEl.content.cloneNode(true));
 
